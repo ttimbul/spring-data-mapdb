@@ -9,10 +9,10 @@
 
 	<name>Spring Data MapDB</name>
 	<description>Spring Data module for MapDB repositories.</description>
-	<url>https://github.com/mrfrag/spring-data-mapdb</url>
+	<url>https://github.com/ttimbul/spring-data-mapdb</url>
 
 	<scm>
-		<developerConnection>scm:git:git@github.com:mrfrag/spring-data-mapdb.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:ttimbul/spring-data-mapdb.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -26,8 +26,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springdata.keyvalue>2.7.1</springdata.keyvalue>
 		<mapdb.version>3.0.8</mapdb.version>
-		<junit.version>4.13.1</junit.version>
-		<beanutils.version>1.9.4</beanutils.version>
+		<junit.version>4.13.2</junit.version>
 	</properties>
 
 	<distributionManagement>
@@ -94,6 +93,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>org.springframework.data.mapdb</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -118,7 +128,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<configuration>
-							<source>1.8</source>
+							<source>17</source>
 						</configuration>
 						<executions>
 							<execution>
