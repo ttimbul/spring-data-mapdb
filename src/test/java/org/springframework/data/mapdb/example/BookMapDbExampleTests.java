@@ -1,22 +1,21 @@
 package org.springframework.data.mapdb.example;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BookExampleConfiguration.class})
@@ -46,12 +45,16 @@ public class BookMapDbExampleTests {
             book.setPublisher((String) item[6]);
             books.add(book);
         }
-        bookRepository.save(books);
+        bookRepository.saveAll(books);
     }
 
     @Test
     public void testFindOne() {
-        assertEquals(books.get(0), bookRepository.findOne(books.get(0).getIsbn()));
+        bookRepository.findById(books.get(0).getIsbn())
+                .ifPresentOrElse(
+                        book -> assertEquals(books.get(0), book),
+                        () -> fail("Expected book 0 to be found")
+                );
     }
 
     @Test
@@ -63,7 +66,7 @@ public class BookMapDbExampleTests {
 
     @Test
     public void testFindAllWithSort() {
-        Iterable<Book> iBooks = bookRepository.findAll(new Sort(Direction.ASC, "publicationDate"));
+        Iterable<Book> iBooks = bookRepository.findAll(Sort.by(Direction.ASC, "publicationDate"));
         assertTrue(iBooks.iterator().hasNext());
         assertEquals(books.get(0), iBooks.iterator().next());
     }
@@ -71,22 +74,22 @@ public class BookMapDbExampleTests {
     @Test
     public void testFindByFieldsInExample() {
         List<Book> booksFromRepository = bookRepository.findByTitle(books.get(0).getTitle());
-        assertTrue(CollectionUtils.isNotEmpty(booksFromRepository));
+        assertFalse(CollectionUtils.isEmpty(booksFromRepository));
         assertEquals(books.get(0), booksFromRepository.get(0));
         booksFromRepository.clear();
 
-        booksFromRepository = bookRepository.findByGenre(books.get(0).getGenre(), new Sort(Direction.DESC, "pages"));
-        assertTrue(CollectionUtils.isNotEmpty(booksFromRepository));
+        booksFromRepository = bookRepository.findByGenre(books.get(0).getGenre(), Sort.by(Direction.DESC, "pages"));
+        assertFalse(CollectionUtils.isEmpty(booksFromRepository));
         assertEquals(3, booksFromRepository.size());
         assertEquals(books.get(1), booksFromRepository.get(0));
         booksFromRepository.clear();
 
         booksFromRepository = bookRepository.findByGenreAndPages(books.get(0).getGenre(), books.get(0).getPages());
-        assertTrue(CollectionUtils.isNotEmpty(booksFromRepository));
+        assertFalse(CollectionUtils.isEmpty(booksFromRepository));
         assertEquals(books.get(0), booksFromRepository.get(0));
 
-        booksFromRepository = bookRepository.findByGenre(books.get(0).getGenre(), new PageRequest(0, 2));
-        assertTrue(CollectionUtils.isNotEmpty(booksFromRepository));
+        booksFromRepository = bookRepository.findByGenre(books.get(0).getGenre(), Pageable.ofSize( 2));
+        assertFalse(CollectionUtils.isEmpty(booksFromRepository));
         assertEquals(2, booksFromRepository.size());
 
     }

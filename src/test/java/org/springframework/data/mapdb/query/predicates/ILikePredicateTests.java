@@ -12,19 +12,19 @@ public class ILikePredicateTests {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void testLike() {
-		Predicate predicatre = new ILikePredicate("%some%");
+		Predicate predicate = new ILikePredicate("%some%");
 
-		assertTrue(predicatre.test("this is some text"));
-		assertFalse(predicatre.test("this is another text"));
+		assertTrue(predicate.test("this is some text"));
+		assertFalse(predicate.test("this is another text"));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void testLikeCaseSensitive() {
-		Predicate predicatre = new ILikePredicate("%some%");
+		Predicate predicate = new ILikePredicate("%some%");
 
-		assertTrue(predicatre.test("this is Some text"));
-		assertTrue(predicatre.test("this is some text"));
+		assertTrue(predicate.test("this is Some text"));
+		assertTrue(predicate.test("this is some text"));
 	}
 
 }

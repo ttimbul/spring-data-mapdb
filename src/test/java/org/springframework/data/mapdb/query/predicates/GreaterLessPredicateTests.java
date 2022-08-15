@@ -1,26 +1,26 @@
 package org.springframework.data.mapdb.query.predicates;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GreaterLessPredicateTests {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void testLess() {
-		Predicate predicate = GreaterLessPredicate.ls(10l);
+		Predicate predicate = GreaterLessPredicate.ls(10L);
 
 		assertTrue(predicate.test(5));
 		assertFalse(predicate.test(10));
 		assertFalse(predicate.test(15));
 
-		assertTrue(predicate.test(new Integer(8)));
-		assertFalse(predicate.test(new Integer(12)));
+		assertTrue(predicate.test(8));
+		assertFalse(predicate.test(12));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -32,22 +32,22 @@ public class GreaterLessPredicateTests {
 		assertFalse(predicate.test(10));
 		assertFalse(predicate.test(5));
 
-		assertTrue(predicate.test(new Integer(18)));
-		assertFalse(predicate.test(new Integer(2)));
+		assertTrue(predicate.test(18));
+		assertFalse(predicate.test(2));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void testLessOrEqual() {
-		Predicate predicate = GreaterLessPredicate.le(new Long(10));
+		Predicate predicate = GreaterLessPredicate.le(10L);
 
-		assertTrue(predicate.test(5l));
-		assertTrue(predicate.test(10l));
-		assertFalse(predicate.test(15l));
+		assertTrue(predicate.test(5L));
+		assertTrue(predicate.test(10L));
+		assertFalse(predicate.test(15L));
 
-		assertTrue(predicate.test(new Long(8)));
-		assertTrue(predicate.test(new Long(10)));
-		assertFalse(predicate.test(new Long(12)));
+		assertTrue(predicate.test(8L));
+		assertTrue(predicate.test(10L));
+		assertFalse(predicate.test(12L));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -59,9 +59,9 @@ public class GreaterLessPredicateTests {
 		assertTrue(predicate.test(10));
 		assertFalse(predicate.test(5));
 
-		assertTrue(predicate.test(new Integer(18)));
-		assertTrue(predicate.test(new Integer(10)));
-		assertFalse(predicate.test(new Integer(2)));
+		assertTrue(predicate.test(18));
+		assertTrue(predicate.test(10));
+		assertFalse(predicate.test(2));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
