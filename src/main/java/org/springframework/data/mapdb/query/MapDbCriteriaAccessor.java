@@ -9,16 +9,16 @@ public class MapDbCriteriaAccessor implements CriteriaAccessor<Predicate<?>> {
 
 	@Override
 	public Predicate<?> resolve(KeyValueQuery<?> query) {
-
-		if (query == null || query.getCritieria() == null) {
+		
+		if (query == null || query.getCriteria() == null) {
 			return null;
 		}
 
-		if (query.getCritieria() instanceof Predicate) {
-			return (Predicate<?>) query.getCritieria();
+		if (query.getCriteria() instanceof Predicate) {
+			return (Predicate<?>) query.getCriteria();
 		}
 
-		throw new IllegalArgumentException("Cannot create criteria for " + query.getCritieria());
+		throw new IllegalArgumentException("Cannot create criteria for " + query.getCriteria());
 	}
 
 }

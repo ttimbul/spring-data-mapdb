@@ -1,16 +1,16 @@
 package org.springframework.data.mapdb.query;
 
+import org.springframework.beans.PropertyAccessorFactory;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 public class PropertyComparator implements Comparator<Object>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String attributeName;
-	private int direction;
+	private final String attributeName;
+	private final int direction;
 
 	public PropertyComparator(String attributeName, boolean ascending) {
 		this.attributeName = attributeName;
@@ -29,8 +29,8 @@ public class PropertyComparator implements Comparator<Object>, Serializable {
 	public int compare(Object o1, Object o2) {
 
 		try {
-			Object o1Field = PropertyUtils.getProperty(o1, this.attributeName);
-			Object o2Field = PropertyUtils.getProperty(o2, this.attributeName);
+			Object o1Field = PropertyAccessorFactory.forBeanPropertyAccess(o1).getPropertyValue(this.attributeName);
+			Object o2Field = PropertyAccessorFactory.forBeanPropertyAccess(o2).getPropertyValue(this.attributeName);
 
 			if (o1Field == null) {
 				return this.direction;
@@ -38,8 +38,8 @@ public class PropertyComparator implements Comparator<Object>, Serializable {
 			if (o2Field == null) {
 				return -1 * this.direction;
 			}
-			if (o1Field instanceof Comparable && o2Field instanceof Comparable) {
-				return this.direction * ((Comparable) o1Field).compareTo((Comparable) o2Field);
+			if (o1Field instanceof Comparable o1Comparable && o2Field instanceof Comparable o2Comparable) {
+				return this.direction * o1Comparable.compareTo(o2Comparable);
 			}
 
 		} catch (Exception ignore) {

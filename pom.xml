@@ -4,7 +4,7 @@
 
 	<groupId>com.github.mrfrag</groupId>
 	<artifactId>spring-data-mapdb</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>Spring Data MapDB</name>
@@ -19,15 +19,15 @@
 	<parent>
 		<groupId>org.springframework.data.build</groupId>
 		<artifactId>spring-data-parent</artifactId>
-		<version>1.8.2.RELEASE</version>
+		<version>2.7.1</version>
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<springdata.keyvalue>1.1.2.RELEASE</springdata.keyvalue>
-		<mapdb.version>3.0.3</mapdb.version>
-		<junit.version>4.12</junit.version>
-		<beanutils.version>1.9.3</beanutils.version>
+		<springdata.keyvalue>2.7.1</springdata.keyvalue>
+		<mapdb.version>3.0.8</mapdb.version>
+		<junit.version>4.13.1</junit.version>
+		<beanutils.version>1.9.4</beanutils.version>
 	</properties>
 
 	<distributionManagement>
@@ -53,12 +53,6 @@
 			<groupId>org.mapdb</groupId>
 			<artifactId>mapdb</artifactId>
 			<version>${mapdb.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>${beanutils.version}</version>
 		</dependency>
 
 		<dependency>
@@ -119,6 +113,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>16</source>
+					<target>16</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

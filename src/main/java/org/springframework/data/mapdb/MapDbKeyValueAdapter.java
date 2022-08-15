@@ -1,8 +1,5 @@
 package org.springframework.data.mapdb;
 
-import java.io.Serializable;
-import java.util.Map.Entry;
-
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -11,9 +8,11 @@ import org.springframework.data.keyvalue.core.ForwardingCloseableIterator;
 import org.springframework.data.util.CloseableIterator;
 import org.springframework.util.Assert;
 
+import java.util.Map.Entry;
+
 public class MapDbKeyValueAdapter extends AbstractKeyValueAdapter {
 
-	private DB mapDb;
+	private final DB mapDb;
 
 	public MapDbKeyValueAdapter() {
 		this(DBMaker.memoryDB().closeOnJvmShutdown().make());
@@ -24,41 +23,41 @@ public class MapDbKeyValueAdapter extends AbstractKeyValueAdapter {
 		Assert.notNull(mapDb, "hzInstance must not be 'null'.");
 		this.mapDb = mapDb;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object put(Serializable id, Object item, Serializable keyspace) {
+	public Object put(Object id, Object item, String keyspace) {
 		return getMap(keyspace).put(id, item);
 	}
 
 	@Override
-	public boolean contains(Serializable id, Serializable keyspace) {
+	public boolean contains(Object id, String keyspace) {
 		return getMap(keyspace).containsKey(id);
 	}
 
 	@Override
-	public Object get(Serializable id, Serializable keyspace) {
+	public Object get(Object id, String keyspace) {
 		return getMap(keyspace).get(id);
 	}
 
 	@Override
-	public Object delete(Serializable id, Serializable keyspace) {
+	public Object delete(Object id, String keyspace) {
 		return getMap(keyspace).remove(id);
 	}
 
 	@Override
-	public Iterable<?> getAllOf(Serializable keyspace) {
+	public Iterable<?> getAllOf(String keyspace) {
 		return getMap(keyspace).getValues();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public CloseableIterator<Entry<Serializable, Object>> entries(Serializable keyspace) {
-		return new ForwardingCloseableIterator<Entry<Serializable, Object>>(getMap(keyspace).entryIterator());
+	public CloseableIterator<Entry<Object, Object>> entries(String keyspace) {
+		return new ForwardingCloseableIterator<Entry<Object, Object>>(getMap(keyspace).entryIterator());
 	}
 
 	@Override
-	public void deleteAllOf(Serializable keyspace) {
+	public void deleteAllOf(String keyspace) {
 		getMap(keyspace).clear();
 	}
 
@@ -68,18 +67,18 @@ public class MapDbKeyValueAdapter extends AbstractKeyValueAdapter {
 	}
 
 	@Override
-	public long count(Serializable keyspace) {
+	public long count(String keyspace) {
 		return getMap(keyspace).size();
 	}
 
 	@SuppressWarnings("rawtypes")
-	public BTreeMap getMap(Serializable keyspace) {
+	public BTreeMap getMap(String keyspace) {
 		Assert.isInstanceOf(String.class, keyspace, "Keyspace identifier must be of type String.");
-		return mapDb.treeMap((String) keyspace).counterEnable().createOrOpen();
+		return mapDb.treeMap(keyspace).counterEnable().createOrOpen();
 	}
-
+	
 	@Override
-	public void destroy() throws Exception {
+	public void destroy() {
 		mapDb.close();
 	}
 

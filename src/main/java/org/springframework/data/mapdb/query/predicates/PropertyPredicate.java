@@ -1,9 +1,8 @@
 package org.springframework.data.mapdb.query.predicates;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.function.Predicate;
+import org.springframework.beans.PropertyAccessorFactory;
 
-import org.apache.commons.beanutils.PropertyUtils;
+import java.util.function.Predicate;
 
 public class PropertyPredicate<V> implements Predicate<V> {
 
@@ -16,14 +15,9 @@ public class PropertyPredicate<V> implements Predicate<V> {
 		this.predicate = predicate;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean test(V input) {
-		try {
-			return predicate.test((V) PropertyUtils.getProperty(input, property));
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			return false;
-		}
+		return predicate.test((V) PropertyAccessorFactory.forBeanPropertyAccess(input).getPropertyValue(property));
 	}
 
 	public static <V> Predicate<V> wrap(Predicate<V> predicate, String property) {
