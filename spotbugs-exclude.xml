@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Class name="org.springframework.data.mapdb.MapDbKeyValueAdapter" />
+        <Bug code="EI2" />
+    </Match>
+    <Match>
+        <Class name="org.springframework.data.mapdb.MapDbKeyValueAdapter" />
+        <Bug code="NP" />
+        <Method name="put" params="java.lang.Object,java.lang.Object,java.lang.String" returns="java.lang.Object" />
+    </Match>
+</FindBugsFilter>
+

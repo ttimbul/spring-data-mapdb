@@ -1,12 +1,12 @@
 package org.springframework.data.mapdb;
 
-import org.jetbrains.annotations.NotNull;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.springframework.data.keyvalue.core.AbstractKeyValueAdapter;
 import org.springframework.data.keyvalue.core.ForwardingCloseableIterator;
 import org.springframework.data.util.CloseableIterator;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -14,8 +14,9 @@ import java.util.Map.Entry;
 
 public class MapDbKeyValueAdapter extends AbstractKeyValueAdapter {
 
+	@NonNull
 	private final DB mapDb;
-
+	
 	public MapDbKeyValueAdapter() {
 		this(DBMaker.memoryDB().closeOnJvmShutdown().make());
 	}
@@ -76,7 +77,7 @@ public class MapDbKeyValueAdapter extends AbstractKeyValueAdapter {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@NotNull
+	@NonNull
 	public BTreeMap getMap(String keyspace) {
 		Assert.isInstanceOf(String.class, keyspace, "Keyspace identifier must be of type String.");
 		return mapDb.treeMap(keyspace).counterEnable().createOrOpen();

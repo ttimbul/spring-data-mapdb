@@ -77,22 +77,23 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
-<!--			<plugin>-->
-<!--				<groupId>com.github.spotbugs</groupId>-->
-<!--				<artifactId>spotbugs-maven-plugin</artifactId>-->
-<!--				<version>4.7.1.1</version>-->
-<!--				<configuration>-->
-<!--					<failOnError>true</failOnError>-->
-<!--				</configuration>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<phase>compile</phase>-->
-<!--						<goals>-->
-<!--							<goal>check</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.7.1.1</version>
+				<configuration>
+					<failOnError>true</failOnError>
+					<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
