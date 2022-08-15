@@ -1,16 +1,14 @@
 package org.springframework.data.mapdb;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.keyvalue.core.QueryEngine;
 import org.springframework.data.mapdb.query.MapDbCriteriaAccessor;
 import org.springframework.data.mapdb.query.MapDbSortAccessor;
+import org.springframework.lang.Nullable;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MapDbQueryEngine extends QueryEngine<MapDbKeyValueAdapter, Predicate<?>, Comparator<?>> {
 
@@ -20,8 +18,8 @@ public class MapDbQueryEngine extends QueryEngine<MapDbKeyValueAdapter, Predicat
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Collection<?> execute(Predicate<?> criteria, Comparator<?> sort, long offset, int rows, String keyspace) {
-		Collection<Object> values = getAdapter().getMap(keyspace).values();
+	public Collection<?> execute(@Nullable Predicate<?> criteria, @Nullable Comparator<?> sort, long offset, int rows, String keyspace) {
+		Collection<Object> values = getRequiredAdapter().getMap(keyspace).values();
 
 		return values
 					.stream()
@@ -37,9 +35,9 @@ public class MapDbQueryEngine extends QueryEngine<MapDbKeyValueAdapter, Predicat
 	@Override
 	public long count(Predicate<?> criteria, String keyspace) {
 		if (criteria == null) {
-			return getAdapter().getMap(keyspace).getSize();
+			return getRequiredAdapter().getMap(keyspace).getSize();
 		}
-		return getAdapter().getMap(keyspace).values().parallelStream().filter(criteria).count();
+		return getRequiredAdapter().getMap(keyspace).values().parallelStream().filter(criteria).count();
 	}
 
 }
